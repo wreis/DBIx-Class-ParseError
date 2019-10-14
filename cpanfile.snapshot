@@ -34,6 +34,18 @@ DISTRIBUTIONS
       perl 5.006001
       strict 0
       warnings 0
+  B-Hooks-OP-Check-0.22
+    pathname: E/ET/ETHER/B-Hooks-OP-Check-0.22.tar.gz
+    provides:
+      B::Hooks::OP::Check 0.22
+    requirements:
+      DynaLoader 0
+      ExtUtils::Depends 0.302
+      ExtUtils::MakeMaker 0
+      parent 0
+      perl 5.008001
+      strict 0
+      warnings 0
   Capture-Tiny-0.48
     pathname: D/DA/DAGOLDEN/Capture-Tiny-0.48.tar.gz
     provides:
@@ -49,6 +61,15 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Carp-Clan-6.08
+    pathname: E/ET/ETHER/Carp-Clan-6.08.tar.gz
+    provides:
+      Carp::Clan 6.08
+    requirements:
+      ExtUtils::MakeMaker 0
+      overload 0
+      perl 5.006
+      strict 0
   Class-Accessor-0.51
     pathname: K/KA/KASEI/Class-Accessor-0.51.tar.gz
     provides:
@@ -515,6 +536,16 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       warnings 0
+  ExtUtils-Depends-0.8000
+    pathname: X/XA/XAOC/ExtUtils-Depends-0.8000.tar.gz
+    provides:
+      ExtUtils::Depends 0.8000
+    requirements:
+      Data::Dumper 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      IO::File 0
+      perl 5.006
   File-Copy-Recursive-0.45
     pathname: D/DM/DMUEY/File-Copy-Recursive-0.45.tar.gz
     provides:
@@ -525,6 +556,31 @@ DISTRIBUTIONS
       File::Copy 0
       File::Glob 0
       File::Spec 0
+  File-ShareDir-1.116
+    pathname: R/RE/REHSACK/File-ShareDir-1.116.tar.gz
+    provides:
+      File::ShareDir 1.116
+    requirements:
+      Carp 0
+      Class::Inspector 1.12
+      ExtUtils::MakeMaker 0
+      File::ShareDir::Install 0.13
+      File::Spec 0.80
+      perl 5.008001
+      warnings 0
+  File-ShareDir-Install-0.13
+    pathname: E/ET/ETHER/File-ShareDir-Install-0.13.tar.gz
+    provides:
+      File::ShareDir::Install 0.13
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      IO::Dir 0
+      perl 5.006
+      strict 0
+      warnings 0
   Hash-Merge-0.300
     pathname: R/RE/REHSACK/Hash-Merge-0.300.tar.gz
     provides:
@@ -534,6 +590,16 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.64
       Scalar::Util 0
       perl 5.008001
+  Import-Into-1.002005
+    pathname: H/HA/HAARG/Import-Into-1.002005.tar.gz
+    provides:
+      Import::Into 1.002005
+    requirements:
+      ExtUtils::MakeMaker 0
+      Module::Runtime 0
+      perl 5.006
+      strict 0
+      warnings 0
   MRO-Compat-0.13
     pathname: H/HA/HAARG/MRO-Compat-0.13.tar.gz
     provides:
@@ -667,6 +733,14 @@ DISTRIBUTIONS
       Sub::Defer 2.003001
       Sub::Quote 2.003001
       perl 5.006
+  MooX-Types-MooseLike-0.29
+    pathname: M/MA/MATEU/MooX-Types-MooseLike-0.29.tar.gz
+    provides:
+      MooX::Types::MooseLike 0.29
+      MooX::Types::MooseLike::Base 0.29
+    requirements:
+      ExtUtils::MakeMaker 0
+      Module::Runtime 0.014
   Package-Stash-0.38
     pathname: E/ET/ETHER/Package-Stash-0.38.tar.gz
     provides:
@@ -699,6 +773,40 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       warnings 0
+  Package-Variant-1.003002
+    pathname: M/MS/MSTROUT/Package-Variant-1.003002.tar.gz
+    provides:
+      Package::Variant 1.003002
+    requirements:
+      Carp 0
+      Import::Into 1.000000
+      Module::Runtime 0.013
+      perl 5.006
+      strictures 2.000000
+  Parse-RecDescent-1.967015
+    pathname: J/JT/JTBRAUN/Parse-RecDescent-1.967015.tar.gz
+    provides:
+      Parse::RecDescent 1.967015
+      Parse::RecDescent::Action 1.967015
+      Parse::RecDescent::ColCounter 1.967015
+      Parse::RecDescent::Directive 1.967015
+      Parse::RecDescent::Error 1.967015
+      Parse::RecDescent::Expectation 1.967015
+      Parse::RecDescent::InterpLit 1.967015
+      Parse::RecDescent::LineCounter 1.967015
+      Parse::RecDescent::Literal 1.967015
+      Parse::RecDescent::OffsetCounter 1.967015
+      Parse::RecDescent::Operator 1.967015
+      Parse::RecDescent::Production 1.967015
+      Parse::RecDescent::Repetition 1.967015
+      Parse::RecDescent::Result 1.967015
+      Parse::RecDescent::Rule 1.967015
+      Parse::RecDescent::Subrule 1.967015
+      Parse::RecDescent::Token 1.967015
+      Parse::RecDescent::UncondReject 1.967015
+    requirements:
+      Test::More 0
+      Text::Balanced 1.95
   Path-Class-0.37
     pathname: K/KW/KWILLIAMS/Path-Class-0.37.tar.gz
     provides:
@@ -749,6 +857,104 @@ DISTRIBUTIONS
       Sub::Quote 2.000001
       Text::Balanced 2.00
       perl 5.006
+  SQL-Translator-1.60
+    pathname: I/IL/ILMARI/SQL-Translator-1.60.tar.gz
+    provides:
+      Parse::RecDescent::SQL::Translator::Parser::DB2::Grammar undef
+      SQL::Translator 1.60
+      SQL::Translator::Diff undef
+      SQL::Translator::Filter::DefaultExtra 1.60
+      SQL::Translator::Filter::Globals 1.60
+      SQL::Translator::Filter::Names 1.60
+      SQL::Translator::Generator::DDL::MySQL undef
+      SQL::Translator::Generator::DDL::PostgreSQL undef
+      SQL::Translator::Generator::DDL::SQLServer undef
+      SQL::Translator::Generator::DDL::SQLite undef
+      SQL::Translator::Generator::Role::DDL undef
+      SQL::Translator::Generator::Role::Quote undef
+      SQL::Translator::Parser 1.60
+      SQL::Translator::Parser::Access 1.60
+      SQL::Translator::Parser::DB2 undef
+      SQL::Translator::Parser::DB2::Grammar undef
+      SQL::Translator::Parser::DBI 1.60
+      SQL::Translator::Parser::DBI::DB2 undef
+      SQL::Translator::Parser::DBI::MySQL 1.60
+      SQL::Translator::Parser::DBI::Oracle 1.60
+      SQL::Translator::Parser::DBI::PostgreSQL 1.60
+      SQL::Translator::Parser::DBI::SQLServer 1.60
+      SQL::Translator::Parser::DBI::SQLite 1.60
+      SQL::Translator::Parser::DBI::Sybase 1.60
+      SQL::Translator::Parser::Excel 1.60
+      SQL::Translator::Parser::JSON 1.60
+      SQL::Translator::Parser::MySQL 1.60
+      SQL::Translator::Parser::Oracle 1.60
+      SQL::Translator::Parser::PostgreSQL 1.60
+      SQL::Translator::Parser::SQLServer 1.60
+      SQL::Translator::Parser::SQLite 1.60
+      SQL::Translator::Parser::Storable 1.60
+      SQL::Translator::Parser::Sybase 1.60
+      SQL::Translator::Parser::XML 1.60
+      SQL::Translator::Parser::XML::SQLFairy 1.60
+      SQL::Translator::Parser::YAML 1.60
+      SQL::Translator::Parser::xSV 1.60
+      SQL::Translator::Producer 1.60
+      SQL::Translator::Producer::ClassDBI 1.60
+      SQL::Translator::Producer::DB2 1.60
+      SQL::Translator::Producer::DiaUml 1.60
+      SQL::Translator::Producer::Diagram 1.60
+      SQL::Translator::Producer::Dumper 1.60
+      SQL::Translator::Producer::GraphViz 1.60
+      SQL::Translator::Producer::HTML 1.60
+      SQL::Translator::Producer::JSON 1.60
+      SQL::Translator::Producer::Latex 1.60
+      SQL::Translator::Producer::MySQL 1.60
+      SQL::Translator::Producer::Oracle 1.60
+      SQL::Translator::Producer::POD 1.60
+      SQL::Translator::Producer::PostgreSQL 1.60
+      SQL::Translator::Producer::SQLServer 1.60
+      SQL::Translator::Producer::SQLite 1.60
+      SQL::Translator::Producer::Storable 1.60
+      SQL::Translator::Producer::Sybase 1.60
+      SQL::Translator::Producer::TT::Base 1.60
+      SQL::Translator::Producer::TT::Table 1.60
+      SQL::Translator::Producer::TTSchema 1.60
+      SQL::Translator::Producer::XML 1.60
+      SQL::Translator::Producer::XML::SQLFairy 1.60
+      SQL::Translator::Producer::YAML 1.60
+      SQL::Translator::Role::BuildArgs undef
+      SQL::Translator::Role::Debug undef
+      SQL::Translator::Role::Error undef
+      SQL::Translator::Role::ListAttr undef
+      SQL::Translator::Schema 1.60
+      SQL::Translator::Schema::Constants 1.60
+      SQL::Translator::Schema::Constraint 1.60
+      SQL::Translator::Schema::Field 1.60
+      SQL::Translator::Schema::Index 1.60
+      SQL::Translator::Schema::Object 1.60
+      SQL::Translator::Schema::Procedure 1.60
+      SQL::Translator::Schema::Role::Compare undef
+      SQL::Translator::Schema::Role::Extra undef
+      SQL::Translator::Schema::Table 1.60
+      SQL::Translator::Schema::Trigger 1.60
+      SQL::Translator::Schema::View 1.60
+      SQL::Translator::Types undef
+      SQL::Translator::Utils 1.60
+      SQL::Translator::Utils::Error 1.60
+      Test::SQL::Translator 1.60
+    requirements:
+      Carp::Clan 0
+      DBI 1.54
+      Digest::SHA 0
+      ExtUtils::MakeMaker 6.54
+      File::ShareDir 1.0
+      File::ShareDir::Install 0
+      Moo 1.000003
+      Package::Variant 1.001001
+      Parse::RecDescent 1.967009
+      Scalar::Util 0
+      Sub::Quote 0
+      Try::Tiny 0.04
+      perl 5.008001
   Scope-Guard-0.21
     pathname: C/CH/CHOCOLATE/Scope-Guard-0.21.tar.gz
     provides:
@@ -763,6 +969,17 @@ DISTRIBUTIONS
       Sub::Exporter::Progressive 0.001013
     requirements:
       ExtUtils::MakeMaker 0
+  Sub-Install-0.928
+    pathname: R/RJ/RJBS/Sub-Install-0.928.tar.gz
+    provides:
+      Sub::Install 0.928
+    requirements:
+      B 0
+      Carp 0
+      ExtUtils::MakeMaker 6.30
+      Scalar::Util 0
+      strict 0
+      warnings 0
   Sub-Name-0.26
     pathname: E/ET/ETHER/Sub-Name-0.26.tar.gz
     provides:
@@ -913,6 +1130,20 @@ DISTRIBUTIONS
       Test::Builder::Module 0
       Test::More 0.47
       perl 5.006
+  Test-Roo-1.004
+    pathname: D/DA/DAGOLDEN/Test-Roo-1.004.tar.gz
+    provides:
+      Test::Roo 1.004
+      Test::Roo::Class 1.004
+      Test::Roo::Cookbook 1.004
+      Test::Roo::Role 1.004
+    requirements:
+      ExtUtils::MakeMaker 6.17
+      Moo 1.000008
+      MooX::Types::MooseLike::Base 0
+      Sub::Install 0
+      Test::More 0.96
+      strictures 0
   Test-Simple-1.302168
     pathname: E/EX/EXODIST/Test-Simple-1.302168.tar.gz
     provides:
@@ -1057,6 +1288,53 @@ DISTRIBUTIONS
       base 0
       lib 0
       perl 5.008
+  bareword-filehandles-0.007
+    pathname: I/IL/ILMARI/bareword-filehandles-0.007.tar.gz
+    provides:
+      bareword::filehandles 0.007
+    requirements:
+      B::Hooks::OP::Check 0
+      ExtUtils::Depends 0
+      ExtUtils::MakeMaker 0
+      Test::More 0.88
+      XSLoader 0
+      if 0
+      perl 5.008001
+      strict 0
+      warnings 0
+  indirect-0.39
+    pathname: V/VP/VPIT/indirect-0.39.tar.gz
+    provides:
+      indirect 0.39
+    requirements:
+      Carp 0
+      Config 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      IO::Handle 0
+      IO::Select 0
+      IPC::Open3 0
+      POSIX 0
+      Socket 0
+      Test::More 0
+      XSLoader 0
+      lib 0
+      perl 5.008001
+  multidimensional-0.014
+    pathname: I/IL/ILMARI/multidimensional-0.014.tar.gz
+    provides:
+      multidimensional 0.014
+    requirements:
+      B::Hooks::OP::Check 0.19
+      CPAN::Meta 2.112580
+      ExtUtils::Depends 0
+      ExtUtils::MakeMaker 0
+      Test::More 0.88
+      XSLoader 0
+      if 0
+      perl 5.008001
+      strict 0
+      warnings 0
   namespace-clean-0.27
     pathname: R/RI/RIBASUSHI/namespace-clean-0.27.tar.gz
     provides:
@@ -1066,3 +1344,13 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Package::Stash 0.23
       perl 5.008001
+  strictures-2.000006
+    pathname: H/HA/HAARG/strictures-2.000006.tar.gz
+    provides:
+      strictures 2.000006
+      strictures::extra undef
+    requirements:
+      bareword::filehandles 0
+      indirect 0
+      multidimensional 0
+      perl 5.006
