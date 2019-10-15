@@ -74,8 +74,9 @@ test 'not null' => sub {
     ok(my $schema = $self->_schema, 'got schema');
     try {
         $schema->resultset('Foo')->create({
-            name => 'Foo' . $time++,
+            name => undef,
             is_foo => 1,
+            bar => $self->_bar,
         })
     } catch {
         my $error = $_;
@@ -89,12 +90,11 @@ test 'data type' => sub {
     try {
         $schema->resultset('Foo')->create({
             name => 'Foo' . $time++,
-            is_foo => 'non boolean data',
+            is_foo => 'text value',
             bar => $self->_bar,
         })
     } catch {
         my $error = $_;
-        diag($error);
         ok($error, 'Failed to create with invalid data type');
     };
 };

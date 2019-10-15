@@ -17,7 +17,7 @@ __PACKAGE__->add_columns(
         size => 100,
     },
     is_foo => {
-        data_type => 'boolean',
+        data_type => 'tinyint',
     },
     bar_id => {
         data_type => 'int',

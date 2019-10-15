@@ -57,7 +57,7 @@ test 'data type' => sub {
     my $self = shift;
     ok(my $foo = $self->_foo, 'got Foo');
     try {
-        $foo->update({ is_foo => 'non boolean data' })
+        $foo->update({ is_foo => 'text value' })
     } catch {
         my $error = $_;
         ok($error, 'Failed to update with invalid data type');
