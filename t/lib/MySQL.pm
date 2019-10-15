@@ -13,6 +13,7 @@ sub _build__mysqld {
     Test::mysqld->new(
         my_cnf => {
             'skip-networking' => '',
+            'sql-mode' => 'TRADITIONAL',
         }
     )
 }
