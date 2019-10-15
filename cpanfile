@@ -7,6 +7,7 @@ on test => sub {
     requires 'Test::Requires';
     requires 'DBD::SQLite';
     requires 'SQL::Translator' => '0.11018';
+    requires 'Try::Tiny';
 };
 
 on develop => sub {

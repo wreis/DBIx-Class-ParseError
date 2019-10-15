@@ -5,6 +5,6 @@ use Test::Roo;
 
 with qw(SQLite Create);
 
-run_me;
+run_me('create');
 
 done_testing;
