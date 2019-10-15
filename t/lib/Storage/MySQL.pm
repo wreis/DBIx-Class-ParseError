@@ -1,4 +1,4 @@
-package MySQL;
+package Storage::MySQL;
 
 use strict;
 use warnings;

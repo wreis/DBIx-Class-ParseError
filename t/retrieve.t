@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::Roo;
 
-with qw(SQLite Retrieve);
+with qw(Storage::SQLite Op::Retrieve);
 
 run_me('retrieve');
 

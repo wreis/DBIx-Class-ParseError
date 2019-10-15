@@ -1,4 +1,4 @@
-package Setup;
+package Storage::Setup;
 
 use strict;
 use warnings;

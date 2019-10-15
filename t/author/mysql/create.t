@@ -11,7 +11,7 @@ BEGIN {
 
 use Test::Requires qw(DBD::mysql Test::mysqld);
 
-with qw(MySQL Create);
+with qw(Storage::MySQL Op::Create);
 
 run_me('create');
 

@@ -11,7 +11,7 @@ BEGIN {
 
 use Test::Requires qw(DBD::mysql Test::mysqld);
 
-with qw(MySQL Update);
+with qw(Storage::MySQL Op::Update);
 
 run_me('update');
 

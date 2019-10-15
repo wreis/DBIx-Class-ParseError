@@ -1,4 +1,4 @@
-package SQLite;
+package Storage::SQLite;
 
 use strict;
 use warnings;

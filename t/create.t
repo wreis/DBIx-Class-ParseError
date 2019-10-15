@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::Roo;
 
-with qw(SQLite Create);
+with qw(Storage::SQLite Op::Create);
 
 run_me('create');
 

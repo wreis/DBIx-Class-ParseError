@@ -1,11 +1,11 @@
-package Update;
+package Op::Update;
 
 use strict;
 use warnings;
 use Test::Roo::Role;
 use Try::Tiny;
 
-with 'Setup';
+with 'Storage::Setup';
 
 has [qw(_foo _bar)] => ( is => 'rw' );
 

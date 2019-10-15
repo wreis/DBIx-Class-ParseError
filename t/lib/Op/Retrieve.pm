@@ -1,10 +1,10 @@
-package Retrieve;
+package Op::Retrieve;
 
 use strict;
 use warnings;
 use Test::Roo::Role;
 
-with 'Create';
+with 'Op::Create';
 
 has _foo => ( is => 'rw' );
 

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::Roo;
 
-with qw(SQLite Update);
+with qw(Storage::SQLite Op::Update);
 
 run_me('update');
 
