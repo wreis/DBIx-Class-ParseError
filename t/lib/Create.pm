@@ -26,12 +26,13 @@ test 'primary key' => sub {
     my $self = shift;
     ok(my $schema = $self->_schema, 'got schema');
     try {
-        $schema->resultset('Foo')->create({
+        my $foo = $schema->resultset('Foo')->new({
             id => 1,
             name => 'Foo' . $time++,
             is_foo => 1,
             bar => $self->_bar,
-        })
+        });
+        $foo->insert;
     } catch {
         my $error = $_;
         ok($error, 'Failed to create with duplicated PK');
