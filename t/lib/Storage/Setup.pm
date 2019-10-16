@@ -13,6 +13,15 @@ has _schema => (
 
 sub _build__schema { MySchema->connect( shift->connect_info ) }
 
-before setup => sub { shift->_schema->deploy };
+has sources => (
+    is => 'ro', predicate => 1,
+);
+
+before setup => sub {
+    my $self = shift;
+    $self->_schema->deploy({
+        $self->has_sources ? ( sources => $self->sources ) : ()
+    });
+};
 
 1;
