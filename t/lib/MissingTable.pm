@@ -5,7 +5,7 @@ use warnings;
 use Test::Roo::Role;
 use Try::Tiny;
 use Test::Exception;
-use DBIx::Class::ParseError;
+use Test::Deep;
 
 with 'Storage::Setup';
 
@@ -20,7 +20,7 @@ around BUILDARGS => sub {
 
 test 'no table foo' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     ok(my $bar = $schema->resultset('Bar')->create({}), 'created Bar');
     my $exception = try {
         $schema->resultset('Foo')->create({
@@ -30,15 +30,22 @@ test 'no table foo' => sub {
         })
     } catch {
         my $error_str = $_;
-        my $parser = DBIx::Class::ParseError->new(schema => $self->_schema);
-        my $error = $parser->parse($error_str);
-        is($error_str, $error, 'stringfy');
-        isa_ok($error, 'DBIx::Class::Exception', '::ParseError::Error');
-        is($error_str, $error->message, 'same error str in message');
-        is($error->type, 'missing_table', 'error type');
-        is($error->table, 'foo', 'target table');
-        ok(!$error->column, 'no column involved');
-        ok(!$error->value, 'no value');
+        my $error = $self->test_parse_error({
+            desc => 'Failed to create with invalid data type',
+            type => 'missing_table',
+            table => 'foo',
+            error_str => $error_str,
+        });
+        my $is_sqlite = $self->db_driver eq 'SQLite';
+        cmp_deeply(
+            $error->column_data,
+            {
+                bar_id => $is_sqlite ? undef : 1,
+                is_foo => $is_sqlite ? undef : 1,
+                name => $is_sqlite ? undef : 'Foo',
+            },
+            'check column data'
+        );
         $error;
     };
     dies_ok { $exception->rethrow };

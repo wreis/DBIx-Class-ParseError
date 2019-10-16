@@ -8,6 +8,8 @@ on test => sub {
     requires 'DBD::SQLite';
     requires 'SQL::Translator' => '0.11018';
     requires 'Try::Tiny';
+    requires 'Module::Runtime';
+    requires 'Regexp::Common';
 };
 
 on develop => sub {

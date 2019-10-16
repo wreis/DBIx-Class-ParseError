@@ -11,7 +11,7 @@ has [qw(_foo _bar)] => ( is => 'rw' );
 
 after setup => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     ok($self->_bar( $schema->resultset('Bar')->create({}) ), 'created Bar');
     ok( $self->_foo( $schema->resultset('Foo')->create({
         name => 'Foo',

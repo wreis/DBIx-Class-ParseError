@@ -11,7 +11,7 @@ has _bar => ( is => 'rw' );
 
 test 'rs->create' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     ok($self->_bar( $schema->resultset('Bar')->create({}) ), 'created Bar');
     ok( $schema->resultset('Foo')->create({
         name => 'Foo',
@@ -24,7 +24,7 @@ my $time = time();
 
 test 'primary key' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     try {
         my $foo = $schema->resultset('Foo')->new({
             id => 1,
@@ -41,7 +41,7 @@ test 'primary key' => sub {
 
 test 'foreign key' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     try {
         $schema->resultset('Foo')->create({
             name => 'Foo' . $time++,
@@ -56,7 +56,7 @@ test 'foreign key' => sub {
 
 test 'unique key' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     try {
         $schema->resultset('Foo')->create({
             name => 'Foo',
@@ -71,7 +71,7 @@ test 'unique key' => sub {
 
 test 'not null' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     try {
         $schema->resultset('Foo')->create({
             name => undef,
@@ -86,7 +86,7 @@ test 'not null' => sub {
 
 test 'data type' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     try {
         $schema->resultset('Foo')->create({
             name => 'Foo' . $time++,
@@ -101,7 +101,7 @@ test 'data type' => sub {
 
 test 'missing column' => sub {
     my $self = shift;
-    ok(my $schema = $self->_schema, 'got schema');
+    ok(my $schema = $self->schema, 'got schema');
     try {
         $schema->resultset('Foo')->create({
             name => 'Foo' . $time++,
