@@ -47,6 +47,7 @@ test 'primary key' => sub {
             desc => 'Failed to update with duplicated PK',
             type => 'primary_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -73,6 +74,7 @@ test 'foreign key' => sub {
             desc => 'Failed to update with invalid FK',
             type => 'foreign_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -99,6 +101,7 @@ test 'not null' => sub {
             desc => 'Failed to update with NULL on not null',
             type => 'not_null',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -125,12 +128,13 @@ test 'data type' => sub {
             desc => 'Failed to update with invalid data type',
             type => 'data_type',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
             $error->column_data,
             {
-                name => undef,
+                is_foo => 'text value',
             },
             'check column data'
         );
@@ -151,14 +155,11 @@ test 'missing column' => sub {
             desc => 'Failed to update with missing column',
             type => 'missing_column',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
-            $error->column_data,
-            {
-                baz => 1000,
-            },
-            'check column data'
+            $error->columns, [qw(baz)],
         );
         $foo->discard_changes;
         $error;
@@ -176,6 +177,7 @@ test 'resultset update' => sub {
             desc => 'Failed to update a resultset',
             type => 'primary_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(

@@ -3,16 +3,27 @@ package DBIx::Class::ParseError::Parser::SQLite;
 use strict;
 use warnings;
 use Moo;
+use Regexp::Common;
 
 with 'DBIx::Class::ParseError::Parser';
 
 sub type_regex {
     return {
-        data_type => qr{attrs_for_bind\(\)\:.+value\s+supplied\s+for\s+column}i,
-        missing_table => qr{no\s+such\s+table}i,
-        missing_column => qr{no\s+such\s+column}i,
-        not_null => qr{NOT\s+NULL\s+constraint\s+failed}i,
-        unique_key => qr{UNIQUE\s+constraint\s+failed}i,
+        data_type => qr{
+                        attrs_for_bind\(\)\:
+                        .+value\s+supplied\s+for\s+column\s+
+                        \'(\w+)\'
+        }ix,
+        missing_table => qr{no\s+such\s+table\:\s+(\w+)}i,
+        missing_column => qr{no\s+such\s+column\s+\'(\w+)\'}i,
+        not_null => qr{
+                       NOT\s+NULL\s+constraint\s+failed\:\s+
+                       ($RE{list}{-pat => '\w+'}{-sep => '.'})
+        }ix,
+        unique_key => qr{
+                         UNIQUE\s+constraint\s+failed\:\s+
+                         ($RE{list}{-pat => '\w+'}{-sep => '.'})
+        }ix,
     };
 }
 

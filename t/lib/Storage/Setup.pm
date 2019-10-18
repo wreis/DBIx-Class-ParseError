@@ -33,7 +33,8 @@ before setup => sub {
 
 sub test_parse_error {
     my ($self, $args) = @_;
-    my ($desc, $type, $table, $error_str) = @$args{qw(desc type table error_str)};
+    my ($desc, $type, $table, $source_name, $error_str)
+        = @$args{qw(desc type table source_name error_str)};
     ok($error_str, $desc);
     my $parser = $self->parser;
     my $error = $parser->process($error_str);
@@ -42,6 +43,7 @@ sub test_parse_error {
     is($error_str, $error->message, 'same error str in message');
     is($error->type, $type, 'error type');
     is($error->table, $table, 'target table');
+    is($error->source_name, $source_name, 'target table');
     return $error;
 }
 

@@ -8,13 +8,25 @@ with 'DBIx::Class::ParseError::Parser';
 
 sub type_regex {
     return {
-        data_type => qr{Incorrect.+value\:.+for\s+column}i,
-        missing_table => qr{Table\s+\'.+\'\s+doesn\'t\s+exist}i,
-        missing_column => qr{no\s+such\s+column}i,
-        not_null => qr{Column.+cannot\s+be\s+null|doesn\'t\s+have\s+a\s+default}i,
-        unique_key => qr{Duplicate\s+entry.+for\s+key\s+\'[^PRIMARY]}i,
-        primary_key => qr{Duplicate\s+entry.+for\s+key\s+\'PRIMARY\'}i,
-        foreign_key => qr{foreign\s+key\s+constraint\s+fails}i,
+        data_type => qr{Incorrect.+value\:.+for\s+column\s+\'(\w+)\'}i,
+        missing_table => qr{Table\s+\'(.+)\'\s+doesn\'t\s+exist}i,
+        missing_column => qr{no\s+such\s+column\s+\'(\w+)\'}i,
+        not_null => qr{
+                       Column\s+\'(\w+)\'\s+cannot\s+be\s+null
+                       |Field\s+\'(\w+)\'\s+doesn\'t\s+have\s+a\s+default
+        }ix,
+        unique_key => qr{
+                         Duplicate\s+entry\s+\'\w+\'\s+
+                         for\s+key\s+\'(\w+[^PRIMARY])\'
+        }ix,
+        primary_key => qr{
+                          Duplicate\s+entry\s+\'(\w+)\'\s+
+                          for\s+key\s+\'(PRIMARY)\'
+        }ix,
+        foreign_key => qr{
+                          foreign\s+key\s+constraint\s+fails\s+
+                          .+CONSTRAINT\s+.+FOREIGN\s+KEY\s+\(\`(\w+)\`\)
+        }ix,
     };
 }
 

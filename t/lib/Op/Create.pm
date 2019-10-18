@@ -41,6 +41,7 @@ test 'primary key' => sub {
             desc => 'Failed to create with duplicated PK',
             type => 'primary_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -73,6 +74,7 @@ test 'foreign key' => sub {
             desc => 'Failed to create with invalid FK',
             type => 'foreign_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -104,6 +106,7 @@ test 'unique key' => sub {
             desc => 'Failed to create with duplicated name',
             type => 'unique_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -134,6 +137,7 @@ test 'composed unique key' => sub {
             desc => 'Failed to create with duplicated name/other_name',
             type => 'unique_key',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -165,6 +169,7 @@ test 'not null' => sub {
             desc => 'Failed to create with NULL on not null',
             type => 'not_null',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
     };
@@ -215,6 +220,7 @@ test 'data type' => sub {
             desc => 'Failed to create with invalid data type',
             type => 'data_type',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         cmp_deeply(
@@ -234,11 +240,11 @@ test 'data type' => sub {
 test 'missing column' => sub {
     my $self = shift;
     ok(my $schema = $self->schema, 'got schema');
-    my $test_column_data = sub {
+    my $test_columns = sub {
         my ($error, $data) = @_;
         cmp_deeply(
-            $error->column_data, $data,
-            'check column data'
+            $error->columns, $data,
+            'check columns'
         );
     };
     my $test_parse_error = sub {
@@ -247,6 +253,7 @@ test 'missing column' => sub {
             desc => 'Failed to create with missing column',
             type => 'missing_column',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
     };
@@ -260,11 +267,7 @@ test 'missing column' => sub {
     } catch {
         my $error_str = $_;
         my $error = $test_parse_error->($error_str);
-        $test_column_data->($error, {
-            baz => 1000,
-            is_foo => 1,
-            name => re('^Foo'),
-        });
+        $test_columns->($error, [qw(baz)]);
         $error;
     };
     dies_ok { $exception->rethrow };
@@ -278,12 +281,7 @@ test 'missing column' => sub {
     } catch {
         my $error_str = $_;
         my $error = $test_parse_error->($error_str);
-        $test_column_data->($error, {
-            baz => 1000,
-            buzz => 100,
-            is_foo => 1,
-            name => re('^Foo'),
-        });
+        $test_columns->($error, [ any(qw/baz buzz/) ]);
         $error;
     };
     dies_ok { $exception->rethrow };

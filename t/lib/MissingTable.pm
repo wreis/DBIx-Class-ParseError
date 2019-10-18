@@ -34,6 +34,7 @@ test 'no table foo' => sub {
             desc => 'Failed to create with invalid data type',
             type => 'missing_table',
             table => 'foo',
+            source_name => 'Foo',
             error_str => $error_str,
         });
         my $is_sqlite = $self->db_driver eq 'SQLite';

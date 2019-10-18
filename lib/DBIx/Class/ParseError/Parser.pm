@@ -12,19 +12,70 @@ has _schema => (
     is => 'ro', required => 1, init_arg => 'schema',
 );
 
+has _source_table_map => (
+    is => 'lazy', builder => '_build_source_table_map',
+);
+
+sub _build_source_table_map {
+    my $self = shift;
+    my $schema = $self->_schema;
+    return {
+        map {
+            my $source = $schema->source($_);
+            ( $schema->class($_) => $source, $source->from => $source )
+        } $schema->sources
+    };
+}
+
 sub parse_type {
     my ($self, $error) = @_;
     my $type_regex = $self->type_regex;
     foreach (sort keys %$type_regex) {
-        if ( $error =~ $type_regex->{$_} ) {
-            return $_;
+        if ( my @data = $error =~ $type_regex->{$_} ) {
+            return {
+                name => $_,
+                data => [ grep { defined } @data ],
+            };
         }
     }
-    return 'unknown';
+    return { name => 'unknown' };
+}
+
+sub _add_info_from_type {
+    my ($self, $error_info, $error_type) = @_;
+    my $source_table_map = $self->_source_table_map;
+    my $source = $source_table_map->{ $error_info->{'table'} };
+    my $action_type_map = {
+        unique_key => sub {
+            my $unique_keys = { $source->unique_constraints };
+            my $unique_data = [
+                map { $_ =~ s{\.}{_}; $_ } @{ $error_type->{'data'} }
+            ];
+            if ( my $unique_cols = $unique_keys->{ $unique_data->[0] } ) {
+                $error_info->{'columns'} = $unique_cols;
+            }
+            else {
+                $error_info->{'type'} = 'primary_key';
+                $error_info->{'columns'} = $unique_keys->{'primary'};
+            }
+        },
+        primary_key => sub {
+            $error_info->{'columns'} = [$source->primary_columns];
+        },
+        default => sub {
+            if ( @{ $error_type->{'data'} } ) {
+                $error_info->{'columns'} = $error_type->{'data'};
+            }
+        },
+    };
+    ( $action_type_map->{ $error_type->{'name'} }
+          || $action_type_map->{'default'} )->();
+    return $error_info;
 }
 
 sub _build_column_data {
     my ($self, $column_keys, $column_values) = @_;
+    $column_keys =~ s{\s*=\s*\?}{}g;
     $column_keys = [split(/\,\s+/, $column_keys)];
     if ($column_values) {
         $column_values =~ s{\'}{}g;
@@ -45,7 +96,7 @@ sub _build_column_data {
 }
 
 sub parse_general_info {
-    my ($self, $error) = @_;
+    my ($self, $error, $error_type) = @_;
 
     my $insert_re = qr{
         INSERT\s+INTO\s+
@@ -60,17 +111,25 @@ sub parse_general_info {
     my $update_re = qr{
         UPDATE\s+
         (\w+)\s+
+        SET\s+
+        ($RE{list}{-pat => '\w+\s*\=\s*\?'}|\w+\s*\=\s*\?)\s*
+        (?:WHERE)?.*\"
+        \s*\w*\s*\w*:?\s*
+        ($RE{list}{-pat => '\d=\'?[\w\s]+\'?'})?
     }ix;
 
     my $missing_column_re = qr{
         (store_column|get_column)\(\)\:\s+
         no\s+such\s+column\s+['"](\w+)['"]\s+
-        on\s+(?:TODOsource)?
+        on\s+($RE{list}{-pat => '\w+'}{-sep => '::'})
     }ix;
 
+    my $source_table_map = $self->_source_table_map;
+
+    my $error_info;
     if ( $error =~ $insert_re ) {
         my ($table, $column_keys, $column_values) = ($1, $2, $3);
-        return {
+        $error_info = {
             operation => 'insert',
             table => $table,
             column_data => $self->_build_column_data(
@@ -79,32 +138,45 @@ sub parse_general_info {
         };
     }
     elsif ( $error =~ $update_re ) {
-        my ($table) = ($1);
-        return {
+        my ($table, $column_keys, $column_values) = ($1, $2, $3);
+        $error_info = {
             operation => 'update',
             table => $table,
+            column_data => $self->_build_column_data(
+                $column_keys, $column_values
+            ),
         };
     }
     elsif ( $error =~ $missing_column_re ) {
-        my ($op_key, $column) = ($1, $2);
+        my ($op_key, $column, $source_name) = ($1, $2, $3);
         my $op_mapping = {
             'store_column' => 'insert',
             'get_column' => 'update',
         };
-        return {
+        my $source = $source_table_map->{ $source_name };
+        $error_info = {
             operation => $op_mapping->{ lc $op_key },
+            $source ? ( table => $source->name ) : (),
+            columns => [$column],
         };
     }
     else {
         die 'Parsing error string failed';
     }
+
+    if (my $source = $source_table_map->{ $error_info->{'table'} }) {
+        $error_info->{'source_name'} = $source->source_name;
+    }
+
+    return $self->_add_info_from_type($error_info, $error_type);
 }
 
 sub process {
     my ($self, $error) = @_;
+    my $error_type = $self->parse_type($error);
     my $err_info = {
-        %{ $self->parse_general_info($error) },
-        type => $self->parse_type($error),
+        type => $error_type->{'name'},
+        %{ $self->parse_general_info($error, $error_type) },
     };
     $error = DBIx::Class::ParseError::Error->new(
         message => "$error",

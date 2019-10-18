@@ -46,8 +46,13 @@
       "test" : {
          "requires" : {
             "DBD::SQLite" : "0",
+            "Module::Runtime" : "0",
+            "Regexp::Common" : "0",
+            "SQL::Translator" : "0.11018",
             "Test::Most" : "0",
-            "Test::Requires" : "0"
+            "Test::Requires" : "0",
+            "Test::Roo" : "0",
+            "Try::Tiny" : "0"
          }
       }
    },

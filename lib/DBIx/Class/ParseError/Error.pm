@@ -12,7 +12,7 @@ extends 'DBIx::Class::Exception';
 
 has message => (is => 'ro', required => 1);
 
-has [qw(type operation table column_data)] => ( is => 'ro' );
+has [qw(type operation table source_name column_data columns)] => ( is => 'ro' );
 
 1;
 
