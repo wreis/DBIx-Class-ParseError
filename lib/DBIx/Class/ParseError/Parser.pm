@@ -34,7 +34,7 @@ sub parse_type {
         if ( my @data = $error =~ $type_regex->{$_} ) {
             return {
                 name => $_,
-                data => [ grep { defined } @data ],
+                data => [ grep { defined && length } @data ],
             };
         }
     }

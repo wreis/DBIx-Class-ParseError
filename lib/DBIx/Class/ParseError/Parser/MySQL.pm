@@ -9,7 +9,7 @@ with 'DBIx::Class::ParseError::Parser';
 sub type_regex {
     return {
         data_type => qr{Incorrect.+value\:.+for\s+column\s+\'(\w+)\'}i,
-        missing_table => qr{Table\s+\'(.+)\'\s+doesn\'t\s+exist}i,
+        missing_table => qr{()Table\s+\'.+\'\s+doesn\'t\s+exist}i,
         missing_column => qr{no\s+such\s+column\s+\'(\w+)\'}i,
         not_null => qr{
                        Column\s+\'(\w+)\'\s+cannot\s+be\s+null

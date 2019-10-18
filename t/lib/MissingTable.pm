@@ -31,7 +31,7 @@ test 'no table foo' => sub {
     } catch {
         my $error_str = $_;
         my $error = $self->test_parse_error({
-            desc => 'Failed to create with invalid data type',
+            desc => 'Failed to create with missing table',
             type => 'missing_table',
             table => 'foo',
             source_name => 'Foo',
