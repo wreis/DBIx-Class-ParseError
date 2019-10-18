@@ -44,6 +44,7 @@ test 'primary key' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(id)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -77,6 +78,7 @@ test 'foreign key' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(bar_id)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -109,6 +111,7 @@ test 'unique key' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(name)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -140,6 +143,7 @@ test 'composed unique key' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(name other_name)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -182,6 +186,7 @@ test 'not null' => sub {
         })
     } catch {
         my $error = $test_parse_error->($_);
+        cmp_deeply($error->columns, [qw(name)], 'target column');
         $test_column_data->($error, {
             bar_id => 1,
             is_foo => 1,
@@ -197,6 +202,7 @@ test 'not null' => sub {
         })
     } catch {
         my $error = $test_parse_error->($_);
+        cmp_deeply($error->columns, [qw(name)], 'target column');
         $test_column_data->($error, {
             bar_id => 1,
             is_foo => 1,
@@ -223,6 +229,7 @@ test 'data type' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(is_foo)], 'target column');
         cmp_deeply(
             $error->column_data,
             {

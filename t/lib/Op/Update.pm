@@ -50,6 +50,7 @@ test 'primary key' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(id)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -77,6 +78,7 @@ test 'foreign key' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(bar_id)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -104,6 +106,7 @@ test 'not null' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(name)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -131,6 +134,7 @@ test 'data type' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [qw(is_foo)], 'target column');
         cmp_deeply(
             $error->column_data,
             {
@@ -180,6 +184,7 @@ test 'resultset update' => sub {
             source_name => 'Foo',
             error_str => $error_str,
         });
+        cmp_deeply($error->columns, [ any(qw/id name/) ], 'target column');
         cmp_deeply(
             $error->column_data,
             {
