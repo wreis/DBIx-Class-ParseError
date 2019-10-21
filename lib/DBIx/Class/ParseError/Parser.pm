@@ -43,28 +43,38 @@ sub parse_type {
 
 sub _add_info_from_type {
     my ($self, $error_info, $error_type) = @_;
-    my $source_table_map = $self->_source_table_map;
-    my $source = $source_table_map->{ $error_info->{'table'} };
+    my $table = $error_info->{'table'};
+    my $replace_dots = sub { $_[0] =~ s{\.}{_}; $_[0] };
+    my $remove_table = sub { $_[0] =~ s{^$table\.}{}i; $_[0] };
+    my $source = $self->_source_table_map->{$table};
     my $action_type_map = {
         unique_key => sub {
             my $unique_keys = { $source->unique_constraints };
             my $unique_data = [
-                map { $_ =~ s{\.}{_}; $_ } @{ $error_type->{'data'} }
+                map { $replace_dots->($_) } @{ $error_type->{'data'} }
             ];
             if ( my $unique_cols = $unique_keys->{ $unique_data->[0] } ) {
-                $error_info->{'columns'} = $unique_cols;
+                $error_info->{'columns'} = [
+                    map { $remove_table->($_) } @$unique_cols
+                ];
             }
             else {
                 $error_info->{'type'} = 'primary_key';
-                $error_info->{'columns'} = $unique_keys->{'primary'};
+                $error_info->{'columns'} = [
+                    map { $remove_table->($_) } @{ $unique_keys->{'primary'} }
+                ];
             }
         },
         primary_key => sub {
-            $error_info->{'columns'} = [$source->primary_columns];
+            $error_info->{'columns'} = [
+                map { $remove_table->($_) } $source->primary_columns
+            ];
         },
         default => sub {
             if ( @{ $error_type->{'data'} } ) {
-                $error_info->{'columns'} = $error_type->{'data'};
+                $error_info->{'columns'} = [
+                    map { $remove_table->($_) } @{ $error_type->{'data'} }
+                ];
             }
         },
     };
