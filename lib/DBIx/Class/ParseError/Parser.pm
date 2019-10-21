@@ -188,11 +188,10 @@ sub process {
         type => $error_type->{'name'},
         %{ $self->parse_general_info($error, $error_type) },
     };
-    $error = DBIx::Class::ParseError::Error->new(
+    return DBIx::Class::ParseError::Error->new(
         message => "$error",
         %$err_info,
     );
-    return $error;
 }
 
 1;
