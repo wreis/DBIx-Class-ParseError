@@ -39,6 +39,8 @@ DBIx::Class::ParseError::Parser::SQLite - Parser for SQLite
 
 =head1 DESCRIPTION
 
+This implements specific rules for parsing errors from SQLite DB.
+
 =head1 AUTHOR
 
 wreis - Wallace reis <wreis@cpan.org>

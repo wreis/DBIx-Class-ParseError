@@ -202,9 +202,33 @@ __END__
 
 =head1 NAME
 
-DBIx::Class::ParseError::Parser - Parser base class
+DBIx::Class::ParseError::Parser - Parser base role
 
 =head1 DESCRIPTION
+
+The core logic of parsing DB errors for different DBMS, which specific classes
+could do its interface and extend functionality where appropriate.
+
+=head1 INTERFACE
+
+=head2 type_regex
+
+It's the only method required to be implemented by the consumer of the parser role,
+returning a hashref with error types as keys and regex as values.
+
+=head2 parse_type
+
+Provides default implementation for parsing type out from error strings.
+
+=head2 parse_general_info
+
+Provides default implementation for parsing general info (table name, operation,
+column info, etc) out from error strings.
+
+=head2 process
+
+Main handler, base logic, invokes the other two above and returns a L<DBIx::Class::ParseError::Error>
+object.
 
 =head1 AUTHOR
 

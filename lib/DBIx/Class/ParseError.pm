@@ -66,24 +66,73 @@ From:
 
 To:
 
-    bless({
-        'table' => 'foo',
-        'columns' => [
-            'id'
-        ],
-        'message' => 'DBIx::Class::Storage::DBI::_dbh_execute(): DBI Exception: DBD::mysql::st execute failed: Duplicate entry \'1\' for key \'PRIMARY\' [for Statement "INSERT INTO foo ( bar_id, id, is_foo, name) VALUES ( ?, ?, ?, ? )" with ParamValues: 0=1, 1=1, 2=1, 3=\'Foo1571434801\'] at ...',
-        'operation' => 'insert',
-        'column_data' => {
-            'name' => 'Foo1571434801',
-            'bar_id' => '1',
-            'id' => '1',
-            'is_foo' => '1'
-        },
-        'source_name' => 'Foo',
-        'type' => 'primary_key'
-    }, 'DBIx::Class::ParseError::Error' );
+    use Data::Dumper;
+    my $parser = DBIx::Class::ParseError->new(schema => $dbic_schema);
+    print Dumper( $parser->process($error) );
+
+    # bless({
+    #    'table' => 'foo',
+    #    'columns' => [
+    #        'id'
+    #    ],
+    #    'message' => 'DBIx::Class::Storage::DBI::_dbh_execute(): DBI Exception: DBD::mysql::st execute failed: Duplicate entry \'1\' for key \'PRIMARY\' [for Statement "INSERT INTO foo ( bar_id, id, is_foo, name) VALUES ( ?, ?, ?, ? )" with ParamValues: 0=1, 1=1, 2=1, 3=\'Foo1571434801\'] at ...',
+    #    'operation' => 'insert',
+    #    'column_data' => {
+    #        'name' => 'Foo1571434801',
+    #        'bar_id' => '1',
+    #        'id' => '1',
+    #        'is_foo' => '1'
+    #    },
+    #    'source_name' => 'Foo',
+    #    'type' => 'primary_key'
+    # }, 'DBIx::Class::ParseError::Error' );
 
 =head1 DESCRIPTION
+
+This a tool to extend DB errors from L<DBIx::Class> (basically, database error
+strings wrapped into a L<DBIx::Class::Exception> obj) into an API to provide
+useful details of the error, allowing app's business layer or helper scripts
+interfacing with database models to instrospect and better handle errors from
+multiple DBMS.
+
+=head2 ERROR CASES
+
+This is a non-exausted list of common errors which should be handled by this
+tool:
+
+=over
+
+=item primary key
+
+=item foreign key(s)
+
+=item unique key(s)
+
+=item not null column(s)
+
+=item data type
+
+=item missing column
+
+=item missing table
+
+=back
+
+=head1 DRIVERS
+
+Initial fully support for errors from the following DBMS:
+
+=over
+
+=item SQLite
+
+See L<DBIx::Class::ParseError::Parser::SQLite>.
+
+=item MySQL
+
+See L<DBIx::Class::ParseError::Parser::MySQL>.
+
+=back
 
 =head1 AUTHOR
 

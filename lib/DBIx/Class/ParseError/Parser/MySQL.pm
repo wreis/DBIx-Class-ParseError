@@ -42,6 +42,8 @@ DBIx::Class::ParseError::Parser::MySQL - Parser for MySQL
 
 =head1 DESCRIPTION
 
+This implements specific rules for parsing errors from MySQL DB.
+
 =head1 AUTHOR
 
 wreis - Wallace reis <wreis@cpan.org>
