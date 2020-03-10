@@ -140,15 +140,11 @@ wreis - Wallace reis <wreis@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) the L</AUTHOR> and L</CONTRIBUTORS> as listed above.
+Copyright (c) the L</AUTHOR>.
 
 =head1 LICENSE
 
 This library is free software and may be distributed under the same terms
 as perl itself.
-
-=head1 SPONSORSHIP
-
-This module exists due to the wonderful people at IntelliTree Solutions L<http://www.intellitree.com>.
 
 =cut
