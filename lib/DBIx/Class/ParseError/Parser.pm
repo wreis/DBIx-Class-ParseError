@@ -113,7 +113,9 @@ sub parse_general_info {
         (\w+)\s+
         \( \s* ($RE{list}{-pat => '\w+'}|\w+)\s* \)\s+
         VALUES\s+
-        \( \s* (?:$RE{list}{-pat => '\?'}|\?)\s* \)\s*\"
+        \( \s* (?:$RE{list}{-pat => '\?'}|\?)\s* \)\s*
+        (?:RETURNING\s+id)?   # optional ID return from PostgreSQL
+        \s*\"
         \s*\w*\s*\w*:?\s*
         ($RE{list}{-pat => '\d=\'?[\w\s]+\'?'})?
     }ix;

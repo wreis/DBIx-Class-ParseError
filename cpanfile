@@ -15,5 +15,6 @@ on test => sub {
 on develop => sub {
     requires 'Test::Pod';
     requires 'Test::mysqld';
+    requires 'Test::PostgreSQL';
     requires 'DBD::mysql';
 };
