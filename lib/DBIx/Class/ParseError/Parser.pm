@@ -139,6 +139,7 @@ sub parse_general_info {
     my $source_table_map = $self->_source_table_map;
 
     my $error_info;
+    my $error_matched;
     if ( $error =~ $insert_re ) {
         my ($table, $column_keys, $column_values) = ($1, $2, $3);
         $error_info = {
@@ -148,6 +149,7 @@ sub parse_general_info {
                 $column_keys, $column_values
             ),
         };
+        $error_matched = 1;
     }
     elsif ( $error =~ $update_re ) {
         my ($table, $column_keys, $column_values) = ($1, $2, $3);
@@ -158,6 +160,7 @@ sub parse_general_info {
                 $column_keys, $column_values
             ),
         };
+        $error_matched = 1;
     }
     elsif ( $error =~ $missing_column_re ) {
         my ($op_key, $column, $source_name) = ($1, $2, $3);
@@ -171,13 +174,37 @@ sub parse_general_info {
             $source ? ( table => $source->name ) : (),
             columns => [$column],
         };
-    }
-    else {
-        die 'Parsing error string failed';
+        $error_matched = 1;
     }
 
-    if (my $source = $source_table_map->{ $error_info->{'table'} }) {
+    if (my $source = $source_table_map->{ $error_info->{'table'} || '' }) {
         $error_info->{'source_name'} = $source->source_name;
+    }
+
+    my $type = $error_type->{name};
+
+    # some databases may support more different error types. Those should be
+    # prefixed with "custom_" (such as "custom_unknown_function" or
+    # something). This allows different databases to present different error
+    # types.
+    # 
+    # However, these errors come in many sizes and shapes. We can't
+    # deterministically say what the columns, operation or *anything* really
+    # is, so we just punt and hand it back to the developer.
+
+    if ( $type =~ /^custom_/ ) {
+        return {
+            column_data => ( $error_info->{column_data} || {} ),
+            columns     => ( $error_info->{columns}     || [] ),
+            operation   => ( $error_info->{operation}   || '' ),
+            source_name => ( $error_info->{source_name} || '' ),
+            table       => ( $error_info->{table}       || '' ),
+            type        => $type,
+        };
+    }
+
+    unless ($error_matched) {
+        die 'Parsing error string failed';
     }
 
     return $self->_add_info_from_type($error_info, $error_type);

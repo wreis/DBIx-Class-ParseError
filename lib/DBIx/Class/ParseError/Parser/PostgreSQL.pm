@@ -1,7 +1,5 @@
 package DBIx::Class::ParseError::Parser::PostgreSQL;
 
-use strict;
-use warnings;
 use Moo;
 
 with 'DBIx::Class::ParseError::Parser';
@@ -16,7 +14,11 @@ sub type_regex {
             ERROR:\s+invalid\s+input\s+syntax\s+for\s+[^:]+:\s+"(.*?)"
         }ix,
         missing_table    => qr{ERROR:\s+relation "(\w+)" does not exist}i,
-        missing_column   => qr{ERROR:\s+column "(\w+)" of relation "(\w+)" does not exist}i,
+        missing_column   => qr{
+            ERROR:\s+column\s+"(\w+)"\s+of\s+relation\s+"(\w+)"\s+does\s+not\s+exist
+            |
+            DBIx::Class::Row::(?:get|store)_column\(\):\s+No\s+such\s+column\s+'([^']+)'\s+on
+        }ix,
         not_null         => qr{ERROR:\s+null\s+value\s+in\s+column\s+"(\w+)"\s+violates\s+not-null\s+constraint}i,
 
         # ERROR:  duplicate key value violates unique constraint "foo_name"
@@ -25,9 +27,10 @@ sub type_regex {
         # primary_key not supported because the error message from PostgreSQL is
         # the same as the error message for unique_key
         foreign_key      => qr{ERROR:\s+insert or update on table "\w+" violates foreign key constraint.*?DETAIL:\s+Key\s+\(([^)]+)\)}si,
-        unknown_function => qr{ERROR:\s+function\s+(.*?)\s+does not exist}i,
-        syntax_error     => qr{ERROR:\s+syntax error at or near\s+([^\n]+)}i,
-        missing_column   => qr{DBIx::Class::Row::(?:get|store)_column\(\):\s+No\s+such\s+column\s+'([^']+)'\s+on}
+
+        # custom functions for PostgreSQL
+        custom_unknown_function => qr{ERROR:\s+function\s+(.*?)\s+does not exist}i,
+        custom_syntax_error     => qr{ERROR:\s+syntax error at or near\s+([^\n]+)}i,
     };
 }
 
