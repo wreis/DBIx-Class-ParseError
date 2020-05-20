@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::Roo;
 
-with qw(Storage::PostgreSQL Op::Create);
+with qw(Storage::PostgreSQL MissingTable);
 
 run_me('missing table');
 

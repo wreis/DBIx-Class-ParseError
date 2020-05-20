@@ -7,24 +7,28 @@ use Moo;
 with 'DBIx::Class::ParseError::Parser';
 
 sub type_regex {
-  return {
-    data_type        => qr{
-        ERROR:\s+column\s+"(\w+)"\s+is\s+of\s+type\s+.*?\s+but\s+expression\s+is\s+of\s+type\s+.*?
-        |
-        # unfortunately, PostgreSQL's error message is a bit problematic
-        # because it tells us the bad data, not the bad column
-        ERROR:\s+invalid\s+input\s+syntax\s+for\s+[^:]+:\s+"(.*?)"
-    }ix,
-    missing_table    => qr{ERROR:\s+relation "(\w+)" does not exist}i,
-    missing_column   => qr{ERROR:\s+column "(\w+)" of relation "(\w+)" does not exist}i,
-    not_null         => qr{ERROR:\s+null\s+value\s+in\s+column\s+"(\w+)"\s+violates\s+not-null\s+constraint}i,
-    unique_key       => qr{ERROR:\s+duplicate key value violates unique constraint "(\w+_key)"}i,
-    primary_key      => qr{ERROR:\s+duplicate key value violates unique constraint "(\w+_pkey)"}i,
-    foreign_key      => qr{ERROR:\s+insert or update on table "\w+" violates foreign key constraint.*?DETAIL:\s+Key\s+\(([^)]+)\)}si,
-    unknown_function => qr{ERROR:\s+function\s+(.*?)\s+does not exist}i,
-    syntax_error     => qr{ERROR:\s+syntax error at or near\s+([^\n]+)}i,
-    missing_column   => qr{DBIx::Class::Row::get_column\(\):\s+No\s+such\s+column\s+'([^']+)'\s+on}
-  };
+    return {
+        data_type => qr{
+            ERROR:\s+column\s+"(\w+)"\s+is\s+of\s+type\s+.*?\s+but\s+expression\s+is\s+of\s+type\s+.*?
+            |
+            # unfortunately, PostgreSQL's error messages are sometimes a bit problematic
+            # because they can tell us the bad data, not the bad column
+            ERROR:\s+invalid\s+input\s+syntax\s+for\s+[^:]+:\s+"(.*?)"
+        }ix,
+        missing_table    => qr{ERROR:\s+relation "(\w+)" does not exist}i,
+        missing_column   => qr{ERROR:\s+column "(\w+)" of relation "(\w+)" does not exist}i,
+        not_null         => qr{ERROR:\s+null\s+value\s+in\s+column\s+"(\w+)"\s+violates\s+not-null\s+constraint}i,
+
+        # ERROR:  duplicate key value violates unique constraint "foo_name"
+        unique_key       => qr{ERROR:\s+duplicate key value violates unique constraint "(\w+)"}i,
+
+        # primary_key not supported because the error message from PostgreSQL is
+        # the same as the error message for unique_key
+        foreign_key      => qr{ERROR:\s+insert or update on table "\w+" violates foreign key constraint.*?DETAIL:\s+Key\s+\(([^)]+)\)}si,
+        unknown_function => qr{ERROR:\s+function\s+(.*?)\s+does not exist}i,
+        syntax_error     => qr{ERROR:\s+syntax error at or near\s+([^\n]+)}i,
+        missing_column   => qr{DBIx::Class::Row::(?:get|store)_column\(\):\s+No\s+such\s+column\s+'([^']+)'\s+on}
+    };
 }
 
 1;
