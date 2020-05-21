@@ -1,8 +1,7 @@
 package DBIx::Class::ParseError::Parser;
 
-use strict;
-use warnings;
 use Moo::Role;
+use Carp 'croak';
 use DBIx::Class::ParseError::Error;
 use Regexp::Common qw(list);
 
@@ -11,6 +10,30 @@ requires 'type_regex';
 has _schema => (
     is => 'ro', required => 1, init_arg => 'schema',
 );
+
+has custom_errors => (
+    is      => 'ro',
+    default => sub { {} },
+);
+
+# Feels weird putting the BUILD method in a role, but this effectively acts as
+# a base class. We can't use a method modifier because BUILD isn't in the
+# inheritance hierarchy of the classes and I didn't think it was appropriate
+# to change too much.
+sub BUILD {
+    my $self           = shift;
+    my $custom_errors = $self->custom_errors;
+    foreach my $type ( keys %$custom_errors ) {
+        unless ( $type =~ /^custom_/ ) {
+            $custom_errors->{"custom_$type"} = delete $custom_errors->{$type};
+            $type = "custom_$type";
+        }
+        unless ('Regexp' eq ref $custom_errors->{$type} ) {
+            my $ref = ref $custom_errors->{$type} || 'string';
+            croak("Custom errors should point to Regexp references, not '$ref': $type");
+        }
+    }
+}
 
 has _source_table_map => (
     is => 'lazy', builder => '_build_source_table_map',
@@ -28,9 +51,20 @@ sub _build_source_table_map {
 }
 
 sub parse_type {
-    my ($self, $error) = @_;
-    my $type_regex = $self->type_regex;
-    foreach (sort keys %$type_regex) {
+    my ( $self, $error ) = @_;
+    my $custom_errors = $self->custom_errors;
+    my $type_regex    = $self->type_regex;
+
+    # try to match custom errors first
+    foreach ( sort keys %$custom_errors ) {
+        if ( my @data = $error =~ $custom_errors->{$_} ) {
+            return {
+                name => $_,
+                data => [ grep { defined && length } @data ],
+            };
+        }
+    }
+    foreach ( sort keys %$type_regex ) {
         if ( my @data = $error =~ $type_regex->{$_} ) {
             return {
                 name => $_,

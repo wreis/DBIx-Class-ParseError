@@ -1,6 +1,7 @@
 package DBIx::Class::ParseError::Parser::PostgreSQL;
 
 use Moo;
+use Carp 'croak';
 
 with 'DBIx::Class::ParseError::Parser';
 
