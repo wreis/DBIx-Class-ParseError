@@ -36,11 +36,17 @@ has _parser => (
 sub _build_parser {
     my $self = shift;
     return try {
-        use_module($self->_parser_class)->new(
-            schema => $self->_schema
-        )
+        use_module( $self->_parser_class )->new(
+            schema        => $self->_schema,
+            custom_errors => $self->custom_errors,
+          )
     } catch { die 'No parser found for ' . $self->_db_driver };
 }
+
+has custom_errors => (
+    is      => 'ro',
+    default => sub { {} },
+);
 
 sub process {
     my ($self, $error) = @_;
@@ -118,6 +124,27 @@ tool:
 
 =back
 
+=head1 CUSTOM ERRORS
+
+You may find your code throwing exceptions that you would like to generate custom
+errors for. You can specify them in the constructor:
+
+    my $parser = DBIx::Class::ParseError->new(
+        schema => $dbic_schema,
+        custom_errors => {
+            locking_failed => qr/Could not update due to version mismatch/i
+        }
+    );
+
+The C<custom_errors> key must point to a hash references whose values are
+regular expressions to match against the error. Due to the unpredictable
+nature of these errors, the exception will like not have additional
+information beyond the error message and the error message.
+
+The parser will attempt to match custom errors before standard errors. Any
+error will have the string C<custom_> prepended, so the above error will be
+reported as C<custom_locking_failed>.
+
 =head1 DRIVERS
 
 Initial fully support for errors from the following DBMS:
@@ -131,6 +158,10 @@ See L<DBIx::Class::ParseError::Parser::SQLite>.
 =item MySQL
 
 See L<DBIx::Class::ParseError::Parser::MySQL>.
+
+=item PostgreSQL
+
+See L<DBIx::Class::ParseError::Parser::PostgreSQL>.
 
 =back
 
