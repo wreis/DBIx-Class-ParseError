@@ -169,6 +169,10 @@ See L<DBIx::Class::ParseError::Parser::PostgreSQL>.
 
 wreis - Wallace reis <wreis@cpan.org>
 
+=head1 CONTRIBUTORS
+
+Ovid - Curtis "Ovid" Poe <ovid@cpan.org>
+
 =head1 COPYRIGHT
 
 Copyright (c) the L</AUTHOR>.
