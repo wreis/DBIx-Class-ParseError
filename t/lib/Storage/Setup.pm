@@ -56,7 +56,7 @@ sub test_parse_error {
     is($error_str, $error->message, 'same error str in message');
     is($error->type, $type, 'error type');
     is($error->table, $table, 'target table');
-    is($error->source_name, $source_name, 'target table');
+    is($error->source_name, $source_name, 'source name');
     return $error;
 }
 

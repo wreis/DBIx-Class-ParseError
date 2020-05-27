@@ -210,6 +210,17 @@ sub parse_general_info {
         };
         $error_matched = 1;
     }
+    elsif ( $error_type->{'name'} eq 'missing_table' ) {
+        my $table_name = $error_type->{'data'}[0];
+        $error_info = {
+            table => $table_name,
+            operation => q{},
+            columns => [],
+            column_data => {},
+            source_name => $source_table_map->{ $table_name }->source_name,
+        };
+        $error_matched = 1;
+    }
 
     if (my $source = $source_table_map->{ $error_info->{'table'} || '' }) {
         $error_info->{'source_name'} = $source->source_name;
