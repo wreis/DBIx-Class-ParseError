@@ -7,7 +7,7 @@ use Try::Tiny;
 use Module::Runtime 'use_module';
 use DBIx::Class::Exception;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 $VERSION = eval $VERSION;
 
 has _schema => (

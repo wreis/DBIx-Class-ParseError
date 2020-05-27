@@ -33,8 +33,8 @@ To:
 
 # DESCRIPTION
 
-This a tool to extend DB errors from [DBIx::Class](https://metacpan.org/pod/DBIx%3A%3AClass) (basically, database error
-strings wrapped into a [DBIx::Class::Exception](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AException) obj) into an API to provide
+This a tool to extend DB errors from [DBIx::Class](https://metacpan.org/pod/DBIx::Class) (basically, database error
+strings wrapped into a [DBIx::Class::Exception](https://metacpan.org/pod/DBIx::Class::Exception) obj) into an API to provide
 useful details of the error, allowing app's business layer or helper scripts
 interfacing with database models to instrospect and better handle errors from
 multiple DBMS.
@@ -52,21 +52,50 @@ tool:
 - missing column
 - missing table
 
+# CUSTOM ERRORS
+
+You may find your code throwing exceptions that you would like to generate custom
+errors for. You can specify them in the constructor:
+
+    my $parser = DBIx::Class::ParseError->new(
+        schema => $dbic_schema,
+        custom_errors => {
+            locking_failed => qr/Could not update due to version mismatch/i
+        }
+    );
+
+The `custom_errors` key must point to a hash references whose values are
+regular expressions to match against the error. Due to the unpredictable
+nature of these errors, the exception will like not have additional
+information beyond the error message and the error message.
+
+The parser will attempt to match custom errors before standard errors. Any
+error will have the string `custom_` prepended, so the above error will be
+reported as `custom_locking_failed`.
+
 # DRIVERS
 
 Initial fully support for errors from the following DBMS:
 
 - SQLite
 
-    See [DBIx::Class::ParseError::Parser::SQLite](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AParseError%3A%3AParser%3A%3ASQLite).
+    See [DBIx::Class::ParseError::Parser::SQLite](https://metacpan.org/pod/DBIx::Class::ParseError::Parser::SQLite).
 
 - MySQL
 
-    See [DBIx::Class::ParseError::Parser::MySQL](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AParseError%3A%3AParser%3A%3AMySQL).
+    See [DBIx::Class::ParseError::Parser::MySQL](https://metacpan.org/pod/DBIx::Class::ParseError::Parser::MySQL).
+
+- PostgreSQL
+
+    See [DBIx::Class::ParseError::Parser::PostgreSQL](https://metacpan.org/pod/DBIx::Class::ParseError::Parser::PostgreSQL).
 
 # AUTHOR
 
 wreis - Wallace reis <wreis@cpan.org>
+
+# CONTRIBUTORS
+
+Ovid - Curtis "Ovid" Poe <ovid@cpan.org>
 
 # COPYRIGHT
 
