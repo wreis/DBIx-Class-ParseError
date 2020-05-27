@@ -232,11 +232,10 @@ sub parse_general_info {
     # prefixed with "custom_" (such as "custom_unknown_function" or
     # something). This allows different databases to present different error
     # types.
-    # 
+    #
     # However, these errors come in many sizes and shapes. We can't
     # deterministically say what the columns, operation or *anything* really
     # is, so we just punt and hand it back to the developer.
-
     if ( $type =~ /^custom_/ ) {
         return {
             column_data => ( $error_info->{column_data} || {} ),
