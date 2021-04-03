@@ -9,6 +9,10 @@ with 'DBIx::Class::ParseError::Parser';
 sub type_regex {
     return {
         data_type => qr{Incorrect.+value\:.+for\s+column\s+\'(\w+)\'}i,
+	data_too_long => qr{Data too long for column \'(\w+)\'}i,
+	data_truncated => qr{Data truncated for column \'(\w+)\'}i,
+	out_of_range => qr{Out of range value for column \'(\w+)\'}i,
+	incorrect_date => qr{Incorrect date value: '.+?' for column `.+?`\.`.+?`\.`(\w+)`}i,
         missing_table => qr{()Table\s+\'.+\'\s+doesn\'t\s+exist}i,
         missing_column => qr{no\s+such\s+column\s+\'(\w+)\'}i,
         not_null => qr{
